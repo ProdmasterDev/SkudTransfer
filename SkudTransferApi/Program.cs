@@ -14,6 +14,10 @@ builder.Services.AddScoped(typeof(WorkerTransfer));
 builder.Services.AddScoped(typeof(CardTransfer));
 builder.Services.AddScoped(typeof(EventTransfer));
 builder.Services.AddScoped(typeof(AccessTransfer));
+builder.Services.AddScoped(typeof(AccessGroupTransfer));
+builder.Services.AddScoped(typeof(WorkerGroupAccessTransfer));
+builder.Services.AddScoped(typeof(WorkerAccessGroupTransfer));
+builder.Services.AddScoped(typeof(RefreshQuickAccessTransfer));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

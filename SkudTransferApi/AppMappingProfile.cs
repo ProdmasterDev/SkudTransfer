@@ -67,6 +67,18 @@ namespace SkudWebApplication
                 .ForMember(x => x.EventTypeId, x => x.MapFrom(x => x.Event))
                 .ForMember(x => x.Create, x => x.MapFrom(x => x.dateTime.ToUniversalTime()))
                 .ForMember(x => x.Flag, x => x.MapFrom(x => x.flag));
+            CreateMap<New.Access, New.QuickAccess>()
+                .ForMember(x => x.Sn, x => x.MapFrom(y => y.ControllerLocation.Controller.Sn))
+                .ForMember(x => x.Granted, x => x.MapFrom((x, y) => ((x.Enterance && y.Reader == 1) || (x.Exit && y.Reader == 2)) ? 1 : 0))
+                .ForMember(x => x.DateBlock, x => x.Ignore());
+            CreateMap<New.GroupAccess, New.QuickAccess>()
+                .ForMember(x => x.Sn, x => x.MapFrom(y => y.ControllerLocation.Controller.Sn))
+                .ForMember(x => x.Granted, x => x.MapFrom((x, y) => ((x.Enterance && y.Reader == 1) || (x.Exit && y.Reader == 2)) ? 1 : 0))
+                .ForMember(x => x.DateBlock, x => x.Ignore());
+            CreateMap<New.AccessGroupAccess, New.QuickAccess>()
+                .ForMember(x => x.Sn, x => x.MapFrom(y => y.ControllerLocation.Controller.Sn))
+                .ForMember(x => x.Granted, x => x.MapFrom((x, y) => ((x.Enterance && y.Reader == 1) || (x.Exit && y.Reader == 2)) ? 1 : 0))
+                .ForMember(x => x.DateBlock, x => x.Ignore());
         }
     }
 }
