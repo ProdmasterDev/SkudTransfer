@@ -22,6 +22,7 @@ namespace SkudTransferApi.Contexts
         public DbSet<AccessMethod> AccessMethods { get; set; }
         public DbSet<WorkerAccessGroup> WorkerAccessGroup { get; set; }
         public DbSet<WorkerGroupAccess> WorkerGroupAccess { get; set; }
+        public DbSet<FaceTerminal> FaceTerminals { get; set; }
         public NewSkudContext(DbContextOptions<NewSkudContext> options) : base(options)
         {
         }
@@ -131,6 +132,18 @@ namespace SkudTransferApi.Contexts
                 .WithOne(wag => wag.AccessGroup)
                 .HasForeignKey(wag => wag.AccessGroupId)
                 .HasPrincipalKey(x => x.Id);
+            
+            modelBuilder.Entity<Controller>()
+                .HasOne(c => c.FaceTerminalEnterance)
+                .WithMany()
+                .HasForeignKey(c => c.FaceEnteranceId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Controller>()
+                .HasOne(c => c.FaceTerminalExit)
+                .WithMany()
+                .HasForeignKey(c => c.FaceExitId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

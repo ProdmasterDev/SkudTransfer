@@ -28,17 +28,25 @@ namespace SkudTransfer.Transfers
             var controllersToUpdate = _mapper.Map<IEnumerable<New.Controller>>(controllersOld);
             foreach (var controller in controllersToUpdate)
             {
-                var entity = await _newContext.Set<New.Controller>().FirstOrDefaultAsync(x => x.Sn == controller.Sn);
-                if(entity == null)
+                try
                 {
-                    entity = controller;
-                    _newContext.Add(entity);
-                }
-                else
+                    var entity = await _newContext.Set<New.Controller>().FirstOrDefaultAsync(x => x.Sn == controller.Sn);
+                    if (entity == null)
+                    {
+                        entity = controller;
+                        _newContext.Add(entity);
+                    }
+                    else
+                    {
+                        entity = _mapper.Map(controller, entity);
+                        _newContext.Update(entity);
+                    }
+                } 
+                catch (Exception ex)
                 {
-                    entity = _mapper.Map(controller, entity);
-                    _newContext.Update(entity);
+
                 }
+
             }
             await _newContext.SaveChangesAsync();
         }

@@ -20,7 +20,7 @@ namespace SkudTransferApi.Transfers
         }
         public async override Task DoTransfer()
         {
-            var olds = await _oldContext.Set<Old.Events>().AsNoTracking().ToListAsync();
+            var olds = await _oldContext.Set<Old.Events>().AsNoTracking().Take(1000).ToListAsync();
             foreach (var old in olds)
             {
                 var controller = await _newContext
@@ -28,7 +28,8 @@ namespace SkudTransferApi.Transfers
                     .AsNoTracking()
                     .Include(x => x.ControllerLocation)
                     .FirstOrDefaultAsync(x => x.Sn == old.sn.ToString());
-                if (controller == null || controller.ControllerLocation == null) { continue; }
+                //if (controller == null || controller.ControllerLocation == null) { continue; }
+                if (controller == null) { continue; }
                 New.Worker? workerNew = null;
                 var workerOld = await _oldContext.Set<Old.Workers>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == old.workerId);
                 if (workerOld != null)
